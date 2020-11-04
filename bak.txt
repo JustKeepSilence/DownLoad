@@ -1,0 +1,94 @@
+<template>
+  <div>
+    <el-container style="height: 500px; border: 1px solid #eee">
+      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+        <el-menu router :default-active="this.$route.path">
+          <el-submenu
+            v-for="(route, index) in routes"
+            :index="index.toString()"
+            :key="index"
+            v-if="!route.meta.hidden && route.children"
+          >
+            <template slot="title">
+              <i :class="route.meta.icon"></i>
+              {{route.meta.title}}
+            </template>
+            <el-menu-item-group>
+              <el-menu-item
+                v-for="(item, key) in route.children"
+                :key="key"
+                :index="item.path"
+                v-show="!item.meta.hidden"
+              >
+                <i :class="item.meta.icon"></i>
+                <span slot="title">{{item.meta.title}}</span>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-menu-item v-else-if="!route.meta.hidden" :index="route.path" :key="index">
+            <i :class="route.meta.icon"></i>
+            <span slot="title">{{route.meta.title}}</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-header style="text-align: right; font-size: 12px">
+          <el-dropdown>
+            <i class="el-icon-setting" style="margin-right: 15px"></i>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>新增</el-dropdown-item>
+              <el-dropdown-item>退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <span>王小虎</span>
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+          <!-- <el-table :data="tableData">
+            <el-table-column prop="date" label="日期" width="140"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+            <el-table-column prop="address" label="地址"></el-table-column>
+          </el-table>-->
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  name: "DownLoad",
+  created() {
+    // 实力挂载完成之后生成用户路由
+    this.routes = this.$store.getters["routes/asyncRoutes"]
+  },
+  computed: {
+    ...mapGetters({
+      actualRoutes: "routes/asyncRoutes",
+    }),
+  },
+  methods: {},
+  data() {
+    return {
+      routes: [], // 用户的动态路由
+    };
+  },
+  // data() {
+
+  // },
+};
+</script>
+<style scoped>
+.el-header {
+  background-color: #b3c0d1;
+  color: #333;
+  line-height: 60px;
+}
+
+.el-aside {
+  color: #333;
+}
+</style>
