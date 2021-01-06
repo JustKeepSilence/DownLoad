@@ -12,7 +12,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.13.2",
     "exceljs": "^4.1.1",
     "file-saver": "^2.0.2",
